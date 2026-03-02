@@ -720,7 +720,8 @@ st.markdown("""
         text-align: center;
         color: white;
         box-shadow: \n            0 20px 60px rgba(76, 175, 80, 0.35),\n            0 8px 24px rgba(0, 0, 0, 0.15),\n            inset 0 1px 0 rgba(255, 255, 255, 0.25),\n            inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-        margin: 30px 0;
+        margin: 30px auto;
+        max-width: 800px;
         animation: slideInScale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         border: 1.5px solid rgba(255, 255, 255, 0.35);
         position: relative;
@@ -1192,7 +1193,7 @@ if submit_button:
             
             # Summary chips
             st.markdown(f"""
-            <div style="text-align: center; margin: 20px 0;">
+            <div style="text-align: center; margin: 20px auto; max-width: 900px;">
                 <span class="summary-chip">{lucide_icon("agriculture", "sm")} {t('crop_type')}: {Crop_Type}</span>
                 <span class="summary-chip">📅 {t('season')}: {Season}</span>
                 <span class="summary-chip">{lucide_icon("droplets", "sm")} {t('irrigation')}: {Irrigation_Type}</span>
@@ -1201,6 +1202,7 @@ if submit_button:
             """, unsafe_allow_html=True)
             
             # Detailed metrics
+            st.markdown('<div style="max-width: 1000px; margin: 0 auto;">', unsafe_allow_html=True)
             col1, col2, col3, col4 = st.columns(4)
             with col1:
                 st.markdown(f'<div class="metric-card">{lucide_icon("thermometer", "sm")} <strong>Temperature</strong><div class="metric-card-value">{Temperature}°C</div></div>', unsafe_allow_html=True)
@@ -1210,6 +1212,7 @@ if submit_button:
                 st.markdown(f'<div class="metric-card">{lucide_icon("cloud", "sm")} <strong>Rainfall</strong><div class="metric-card-value">{Rainfall} mm</div></div>', unsafe_allow_html=True)
             with col4:
                 st.markdown(f'<div class="metric-card">{lucide_icon("sun", "sm")} <strong>Sunlight</strong><div class="metric-card-value">{Sunlight_Hours} hrs</div></div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
         except Exception as e:
             st.error(f"❌ {t('error_msg')}")
