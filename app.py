@@ -51,9 +51,9 @@ def lucide_icon(name: str, size_class: str = "md") -> str:
     return f'<span class="lucide-icon {size_class}">{svg}</span>'
 
 # ================= LOAD ARTIFACTS =================
-model = joblib.load("trained_model.pkl")
+model = joblib.load("model.pkl")
 scaler = joblib.load("scaler.pkl")
-columns = joblib.load("columns.pkl")
+columns = joblib.load("column.pkl")
 
 # ================= PAGE CONFIG =================
 st.set_page_config(
@@ -72,7 +72,7 @@ translations = {
     'en': {
         'title': 'Smart Crop Yield Predictor',
         'subtitle': 'Predict your crop yield with AI-powered precision',
-        'ai_badge': 'smart_toy AI-Based Prediction',
+        'ai_badge': 'AI-Based Prediction',
         'ml_badge': 'Powered by Machine Learning',
         'section_soil_nutrients': 'Soil Nutrients (NPK)',
         'section_soil_properties': 'Soil Properties',
@@ -97,7 +97,7 @@ translations = {
         'region': 'Region',
         'fertilizer': 'Fertilizer Used (kg/ha)',
         'pesticide': 'Pesticide Used (kg/ha)',
-        'predict_btn': 'agriculture Predict Crop Yield',
+        'predict_btn': 'Predict',
         'analyzing': 'Analyzing with AI...',
         'result_title': 'Predicted Crop Yield',
         'confidence': 'Confidence',
@@ -115,7 +115,7 @@ translations = {
     'hi': {
         'title': 'स्मार्ट फसल उपज भविष्यवक्ता',
         'subtitle': 'एआई-संचालित सटीकता के साथ अपनी फसल की उपज की भविष्यवाणी करें',
-        'ai_badge': 'smart_toy एआई-आधारित भविष्यवाणी',
+        'ai_badge': 'एआई-आधारित भविष्यवाणी',
         'ml_badge': 'मशीन लर्निंग द्वारा संचालित',
         'section_soil_nutrients': 'मिट्टी के पोषक तत्व (NPK)',
         'section_soil_properties': 'मिट्टी के गुण',
@@ -140,7 +140,7 @@ translations = {
         'region': 'क्षेत्र',
         'fertilizer': 'उपयोग किया गया उर्वरक (किग्रा/हेक्टेयर)',
         'pesticide': 'उपयोग किया गया कीटनाशक (किग्रा/हेक्टेयर)',
-        'predict_btn': 'agriculture फसल उपज की भविष्यवाणी करें',
+        'predict_btn': 'भविष्यवाणी करें',
         'analyzing': 'एआई के साथ विश्लेषण कर रहे हैं...',
         'result_title': 'अनुमानित फसल उपज',
         'confidence': 'विश्वास',
@@ -173,6 +173,7 @@ def get_base64_image(image_path):
 
 # Load background image
 bg_image = get_base64_image("farmer.jpeg")
+logo_image = get_base64_image("image.png")
 
 # ================= CUSTOM CSS =================
 if bg_image:
@@ -307,11 +308,11 @@ st.markdown("""
         margin: 0 !important;
     }
     
-    /* Form Submit Button Container */
+    /* Form Submit Button Container - Moved styles to after general button styles */
     [data-testid="stForm"] .stButton {
         display: flex;
         justify-content: center;
-        margin-top: 20px !important;
+        margin-top: 30px !important;
     }
     
     /* Minimize all gaps and spacings */
@@ -327,8 +328,9 @@ st.markdown("""
         align-items: center;
         justify-content: center;
         width: 100%;
+        max-width: 900px;
+        margin: 0 auto !important;
         padding: 30px 20px 20px 20px;
-        margin: 0 !important;
         gap: 0;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(232, 245, 233, 0.5) 100%);
         border-radius: 12px;
@@ -430,7 +432,7 @@ st.markdown("""
     
     /* AI Badges */
     .ai-badge {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
         color: white;
         padding: 8px 16px;
         border-radius: 20px;
@@ -438,13 +440,13 @@ st.markdown("""
         font-weight: 600;
         display: inline-block;
         margin: 0 6px !important;
-        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 3px 10px rgba(46, 125, 50, 0.3);
         transition: all 0.3s ease;
     }
     
     .ai-badge:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 16px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 5px 16px rgba(76, 175, 80, 0.4);
     }
     
     /* Card-Based Section Headers */
@@ -502,12 +504,38 @@ st.markdown("""
         letter-spacing: 0.3px;
     }
     
+    /* Input Field Containers - Solid Background for Better Visibility */
+    .stNumberInput,
+    .stSlider,
+    .stSelectbox {
+        background: rgba(255, 255, 255, 0.95) !important;
+        padding: 12px 16px !important;
+        border-radius: 12px !important;
+        margin-bottom: 8px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+        border: 1px solid rgba(76, 175, 80, 0.15) !important;
+    }
+    
+    /* Field Labels - Better Visibility */
+    .element-container p strong {
+        color: #2E7D32 !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
+        background: rgba(255, 255, 255, 0.85) !important;
+        padding: 4px 8px !important;
+        border-radius: 6px !important;
+        display: inline-block !important;
+        margin-bottom: 6px !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+    }
+    
     /* Input Field Styling - Modern Glassmorphism */
     .stNumberInput > div > div > input,
     .stSelectbox > div > div > select {
         border-radius: 12px !important;
         border: 1.5px solid rgba(224, 224, 224, 0.6) !important;
-        background: rgba(255, 255, 255, 0.7) !important;
+        background: rgba(255, 255, 255, 1) !important;
         backdrop-filter: blur(10px) !important;
         padding: 12px 14px !important;
         font-size: clamp(0.9rem, 2.5vw, 1rem) !important;
@@ -518,17 +546,55 @@ st.markdown("""
     .stNumberInput > div > div > input:focus,
     .stSelectbox > div > div > select:focus {
         border-color: #4CAF50 !important;
-        background: rgba(255, 255, 255, 0.9) !important;
+        background: rgba(255, 255, 255, 1) !important;
         box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15) !important;
         transform: translateY(-1px) !important;
     }
     
+    /* Slider Styling - High Contrast for Better Visibility */
+    .stSlider {
+        padding: 16px !important;
+    }
+    
     .stSlider > div > div > div {
         background-color: #4CAF50 !important;
+        height: 6px !important;
     }
     
     .stSlider > div > div > div > div {
         background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%) !important;
+        height: 6px !important;
+    }
+    
+    /* Slider Thumb - Larger and More Visible */
+    .stSlider > div > div > div > div > div {
+        width: 20px !important;
+        height: 20px !important;
+        background: #4CAF50 !important;
+        border: 3px solid white !important;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4) !important;
+    }
+    
+    .stSlider > div > div > div > div > div:hover {
+        background: #45a049 !important;
+        box-shadow: 0 3px 12px rgba(76, 175, 80, 0.5) !important;
+    }
+    
+    /* Slider Track - Full Width and High Contrast */
+    .stSlider [data-baseweb="slider"] {
+        background: transparent !important;
+    }
+    
+    .stSlider [role="slider"] {
+        width: 20px !important;
+        height: 20px !important;
+        background-color: #4CAF50 !important;
+        border: 3px solid white !important;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4) !important;
+    }
+    
+    .stSlider [role="slider"]:focus {
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3) !important;
     }
     
     /* Tooltip Styling */
@@ -546,8 +612,8 @@ st.markdown("""
         margin-left: 5px;
     }
     
-    /* Big CTA Button - Premium Glassmorphism */
-    .stButton > button {
+    /* Language Toggle and Other Buttons - Exclude Form Submit */
+    .stButton:not([data-testid="stForm"] .stButton) > button {
         width: auto !important;
         min-width: 180px;
         background: linear-gradient(135deg, #4CAF50 0%, #45a049 50%, #66BB6A 100%);
@@ -570,7 +636,7 @@ st.markdown("""
         white-space: nowrap;
     }
     
-    .stButton > button::before {
+    .stButton:not([data-testid="stForm"] .stButton) > button::before {
         content: '';
         position: absolute;
         top: 50%;
@@ -583,20 +649,61 @@ st.markdown("""
         transition: width 0.6s, height 0.6s;
     }
     
-    .stButton > button:hover {
+    .stButton:not([data-testid="stForm"] .stButton) > button:hover {
         background-position: 100% 0;
         box-shadow: \n            0 12px 32px rgba(76, 175, 80, 0.45),\n            0 4px 12px rgba(0, 0, 0, 0.15),\n            inset 0 1px 0 rgba(255, 255, 255, 0.4);
         transform: translateY(-2px);
     }
     
-    .stButton > button:hover::before {
+    .stButton:not([data-testid="stForm"] .stButton) > button:hover::before {
         width: 300px;
         height: 300px;
     }
     
-    .stButton > button:active {
+    .stButton:not([data-testid="stForm"] .stButton) > button:active {
         transform: translateY(0);
         box-shadow: \n            0 4px 16px rgba(76, 175, 80, 0.35),\n            0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Form Submit Button - Enhanced Styling with Orange Color */
+    [data-testid="stForm"] .stButton > button {
+        width: auto !important;
+        min-width: 200px;
+        background: linear-gradient(135deg, #F57C00 0%, #FF9800 50%, #FFB74D 100%) !important;
+        background-size: 200% 100% !important;
+        color: white !important;
+        font-size: clamp(1rem, 3vw, 1.2rem) !important;
+        font-weight: 700 !important;
+        padding: 14px 40px !important;
+        border-radius: 25px !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 
+            0 8px 24px rgba(245, 124, 0, 0.35),
+            0 2px 8px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        cursor: pointer !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1.5px !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+    
+    [data-testid="stForm"] .stButton > button:hover {
+        background-position: 100% 0 !important;
+        box-shadow: 
+            0 12px 32px rgba(255, 152, 0, 0.45),
+            0 4px 12px rgba(0, 0, 0, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+        transform: translateY(-3px) scale(1.03) !important;
+    }
+    
+    [data-testid="stForm"] .stButton > button:active {
+        transform: translateY(-1px) scale(1.01) !important;
+        box-shadow: 
+            0 4px 16px rgba(245, 124, 0, 0.35),
+            0 2px 6px rgba(0, 0, 0, 0.1) !important;
     }
     
     /* Result Box with Animation - Premium Glassmorphism */
@@ -679,26 +786,67 @@ st.markdown("""
         letter-spacing: 0.5px;
     }
     
-    /* Summary Chips - Modern Glassmorphism */
+    /* Summary Chips - Enhanced Visibility */
     .summary-chip {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(15px) saturate(180%);
+        background: linear-gradient(135deg, #ffffff 0%, #f1f8e9 100%);
         color: #2E7D32;
-        padding: 12px 24px;
-        border-radius: 28px;
+        padding: 14px 28px;
+        border-radius: 30px;
         display: inline-block;
-        margin: 6px;
+        margin: 8px;
         font-weight: 700;
-        font-size: clamp(0.85rem, 2vw, 1.05rem);
-        box-shadow: \n            0 4px 12px rgba(0, 0, 0, 0.1),\n            0 1px 4px rgba(0, 0, 0, 0.06),\n            inset 0 1px 0 rgba(255, 255, 255, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.6);
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+        box-shadow: 
+            0 6px 16px rgba(0, 0, 0, 0.15),
+            0 2px 6px rgba(0, 0, 0, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        border: 2px solid rgba(76, 175, 80, 0.3);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         letter-spacing: 0.3px;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     }
     
     .summary-chip:hover {
-        transform: translateY(-2px) scale(1.05);
-        box-shadow: \n            0 6px 16px rgba(0, 0, 0, 0.15),\n            0 2px 6px rgba(0, 0, 0, 0.08),\n            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 
+            0 8px 20px rgba(0, 0, 0, 0.18),
+            0 3px 8px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 1);
+        border-color: rgba(76, 175, 80, 0.5);
+    }
+    
+    /* Metric Cards - Enhanced Visibility */
+    .metric-card {
+        padding: 18px;
+        background: linear-gradient(135deg, #ffffff 0%, #f1f8e9 100%);
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: 
+            0 6px 16px rgba(0, 0, 0, 0.15),
+            0 2px 6px rgba(0, 0, 0, 0.08);
+        border: 2px solid rgba(76, 175, 80, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .metric-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 
+            0 8px 20px rgba(0, 0, 0, 0.18),
+            0 3px 8px rgba(0, 0, 0, 0.1);
+        border-color: rgba(76, 175, 80, 0.4);
+    }
+    
+    .metric-card strong {
+        color: #2E7D32;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-weight: 700;
+    }
+    
+    .metric-card-value {
+        color: #1B5E20;
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        font-weight: 800;
+        margin-top: 8px;
     }
     
     /* Loading Animation */
@@ -743,6 +891,18 @@ st.markdown("""
         .stButton > button {
             padding: 15px 20px;
         }
+        
+        /* Better visibility for input containers on mobile */
+        .stNumberInput,
+        .stSlider,
+        .stSelectbox {
+            padding: 10px 12px !important;
+            margin-bottom: 6px !important;
+        }
+        
+        .element-container p strong {
+            font-size: 0.9rem !important;
+        }
     }
     
     /* Metric Cards */
@@ -757,58 +917,38 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Footer - Premium Glassmorphism */
+    /* Footer - Clean and Minimal */
     .footer {
         text-align: center;
-        padding: 40px 30px;
-        margin: 50px auto 20px auto;
-        max-width: 1000px;
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(20px) saturate(180%);
-        border-radius: 24px;
-        box-shadow: 
-            0 10px 40px rgba(0, 0, 0, 0.12),
-            0 4px 12px rgba(0, 0, 0, 0.08),
-            inset 0 1px 0 rgba(255, 255, 255, 0.6),
-            inset 0 -1px 0 rgba(0, 0, 0, 0.04);
-        border: 1.5px solid rgba(255, 255, 255, 0.7);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .footer::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, 
-            transparent 0%, 
-            rgba(76, 175, 80, 0.6) 50%, 
-            transparent 100%);
+        padding: 20px;
+        margin: 30px auto 20px auto;
+        max-width: 800px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(76, 175, 80, 0.2);
     }
     
     .footer-title {
         color: #2E7D32;
-        font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-        font-weight: 800;
-        margin-bottom: 15px;
-        text-shadow: 0 1px 2px rgba(46, 125, 50, 0.1);
-        letter-spacing: 0.5px;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        letter-spacing: 0.3px;
     }
     
-    .footer-subtitle {
-        color: #666;
-        font-size: clamp(0.85rem, 2vw, 0.95rem);
-        margin: 10px 0;
+    .team-members {
+        color: #555;
+        font-size: 0.9rem;
+        margin: 8px 0;
         font-weight: 500;
+        line-height: 1.6;
     }
     
     .footer-copyright {
-        color: #999;
-        font-size: clamp(0.75rem, 1.8vw, 0.85rem);
-        margin-top: 15px;
+        color: #888;
+        font-size: 0.8rem;
+        margin-top: 12px;
         font-weight: 400;
     }
 </style>
@@ -830,10 +970,11 @@ with col4:
             st.rerun()
 
 # Title and Logo
+logo_html = f'<img src="data:image/png;base64,{logo_image}" style="width: 48px; height: 48px; object-fit: contain;">' if logo_image else lucide_icon('sprout', 'lg')
 st.markdown(f"""
 <div class="hero-section">
     <h1 style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-        {lucide_icon('sprout', 'lg')} {t('title')}
+        {logo_html} {t('title')}
     </h1>
     <p class="subtitle">{t("subtitle")}</p>
     <div class="cta-buttons-container">
@@ -1052,57 +1193,30 @@ if submit_button:
             # Detailed metrics
             col1, col2, col3, col4 = st.columns(4)
             with col1:
-                st.markdown(f'<div style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center;">{lucide_icon("thermometer", "sm")} <strong>Temperature</strong><br/>{Temperature}°C</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="metric-card">{lucide_icon("thermometer", "sm")} <strong>Temperature</strong><div class="metric-card-value">{Temperature}°C</div></div>', unsafe_allow_html=True)
             with col2:
-                st.markdown(f'<div style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center;">{lucide_icon("droplets", "sm")} <strong>Humidity</strong><br/>{Humidity}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="metric-card">{lucide_icon("droplets", "sm")} <strong>Humidity</strong><div class="metric-card-value">{Humidity}%</div></div>', unsafe_allow_html=True)
             with col3:
-                st.markdown(f'<div style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center;">{lucide_icon("cloud", "sm")} <strong>Rainfall</strong><br/>{Rainfall} mm</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="metric-card">{lucide_icon("cloud", "sm")} <strong>Rainfall</strong><div class="metric-card-value">{Rainfall} mm</div></div>', unsafe_allow_html=True)
             with col4:
-                st.metric("☀️ Sunlight", f"{Sunlight_Hours} hrs")
-            
-            # Download Report Button (placeholder)
-            st.markdown("<br>", unsafe_allow_html=True)
-            col1, col2, col3 = st.columns([1, 2, 1])
-            with col2:
-                st.markdown(f"""
-                <div style="text-align: center;">
-                    <button style="
-                        background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-                        color: white;
-                        padding: 12px 30px;
-                        border: none;
-                        border-radius: 25px;
-                        font-size: 1rem;
-                        font-weight: 600;
-                        cursor: pointer;
-                        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
-                    ">
-                        {t('download_report')}
-                    </button>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown(f'<div class="metric-card">{lucide_icon("sun", "sm")} <strong>Sunlight</strong><div class="metric-card-value">{Sunlight_Hours} hrs</div></div>', unsafe_allow_html=True)
             
         except Exception as e:
             st.error(f"❌ {t('error_msg')}")
             st.exception(e)
 
 # ================= FOOTER =================
-st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # Footer content
 st.markdown("""
 <div class="footer">
-    <div class="footer-title">
-        🤖 ML Model: Random Forest Regressor | 📊 Smart Crop Yield Dataset
-    </div>
-    <div class="footer-subtitle">
-        🚀 Powered by Streamlit • 🌾 Designed for Indian Farmers
-    </div>
-    <div class="footer-subtitle" style="margin-top: 12px;">
-        💬 AI-Powered Predictions • 🌍 Sustainable Agriculture • 📈 Data-Driven Farming
+    <div class="footer-title">Team Members</div>
+    <div class="team-members">
+        Aditya Shankar • Animesh Rai • Kunal Dev Sahu • Rishiwant Kumar Maurya
     </div>
     <div class="footer-copyright">
-        © 2026 Smart Crop Yield Predictor - Empowering Farmers with Artificial Intelligence
+        © 2026 Smart Crop Yield Predictor
     </div>
 </div>
 """, unsafe_allow_html=True)
