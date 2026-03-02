@@ -1010,8 +1010,6 @@ with st.form("prediction_form"):
         st.markdown(f"**{t('nitrogen')}** ℹ️")
         N = st.number_input("N (kg/ha)", min_value=0.0, max_value=200.0, value=97.0, step=1.0, 
                            help=t('tooltip_n'), label_visibility="collapsed")
-        N_slider = st.slider("", min_value=0.0, max_value=200.0, value=97.0, step=1.0, key="n_slider")
-        N = N_slider  # Use slider value
     with col2:
         st.markdown(f"**{t('phosphorus')}** ℹ️")
         P = st.number_input("P (kg/ha)", min_value=0.0, max_value=200.0, value=20.0, step=1.0,
@@ -1095,7 +1093,7 @@ with st.form("prediction_form"):
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f'**{lucide_icon("agriculture", "sm")} {t("crop_type")}**', unsafe_allow_html=True)
-        Crop_Type = st.selectbox("Crop", ["Wheat", "Rice", "Cotton", "Sugarcane", "Maize", "Barley", "Jute"],
+        Crop_Type = st.selectbox("Crop", ["Wheat", "Rice", "Maize", "Barley", "Jute"],
                                 label_visibility="collapsed")
         
         st.markdown(f"**📅 {t('season')}**")
