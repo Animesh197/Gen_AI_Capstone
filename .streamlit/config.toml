@@ -8,8 +8,8 @@ font = "sans serif"
 [server]
 headless = true
 port = 8501
-enableCORS = false
-enableXsrfProtection = true
+enableCORS = true
+enableXsrfProtection = false
 
 [browser]
 gatherUsageStats = false
@@ -19,3 +19,10 @@ serverPort = 8501
 [runner]
 magicEnabled = true
 fastReruns = true
+
+[client]
+toolbarMode = "minimal"
+showErrorDetails = false
+
+[ui]
+hideTopBar = true
