@@ -10,7 +10,7 @@ def load_vector_store():
 
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
-    # ✅ LOAD if exists
+    # LOAD if exists
     if os.path.exists(DB_PATH):
         return FAISS.load_local(
             DB_PATH,
@@ -18,7 +18,7 @@ def load_vector_store():
             allow_dangerous_deserialization=True
         )
 
-    # ❗ CREATE only once
+    # CREATE only once
     with open("backend/rag/knowledge_base.txt", "r") as f:
         text = f.read()
 
