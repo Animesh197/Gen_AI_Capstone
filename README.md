@@ -424,7 +424,7 @@ Developed as an academic Gen AI Capstone project by:
 
 ---
 
-## Future Improvements (not for now)
+## Future Improvements (not for)
 
 - Swap `flan-t5-large` for an instruction-following model (Mistral-7B-Instruct or Gemini Flash) for more reliable JSON advisory output
 - Add LangGraph retry logic for transient HuggingFace API failures
