@@ -5,7 +5,7 @@ import joblib
 import time
 import base64
 
-from backend.main import run_pipeline
+from backend.core.pipeline import run_pipeline
 
 # ================= LUCIDE SVG ICONS =================
 LUCIDE_ICONS = {
@@ -1169,11 +1169,13 @@ if submit_button:
 
             st.write("🔻 Factors reducing yield:")
             for _, row in top_negative.iterrows():
-                st.write(f"- {row['Feature']}")
+                feature = row['Feature'].replace("_", " ")
+                st.write(f"- {feature}")
 
             st.write("🔺 Factors improving yield:")
             for _, row in top_positive.iterrows():
-                st.write(f"- {row['Feature']}")
+                feature = row['Feature'].replace("_", " ")
+                st.write(f"- {feature}")
 
             # ================= OUTPUT =================
             st.subheader("📊 Yield Prediction")
@@ -1185,23 +1187,39 @@ if submit_button:
             st.subheader("🔍 Detected Issues")
             if issues:
                 for issue in issues:
-                    st.write(f"- {issue}")
+                    st.write(f"- {issue['type'].capitalize()} ({issue['severity']})")
             else:
                 st.write("No major issues detected")
 
             st.subheader("💡 Recommendations")
             if recommendations:
                 for rec in recommendations:
-                    st.write(f"- {rec}")
+                    st.write(f"- {rec['action']} (Priority: {rec['priority']})")
             else:
                 st.write("All parameters look optimal")
 
             # rag and llm generated(added phase 4)
             st.subheader("📘 AI Advisory Report")
-            st.write(result["advisory"])
+
+            advisory = result.get("advisory")
+
+            if advisory:
+                st.subheader("📘 AI Advisory Report")
+                if isinstance(advisory, dict):
+                    st.write(advisory.get("summary", ""))
+                    for rec in advisory.get("recommendations", []):
+                        st.write(f"- {rec}")
+                else:
+                    st.write(advisory)
+            else:
+                st.subheader("📘 AI Advisory Report")
+                st.write("No advanced advisory needed (Low Risk scenario).")
 
             st.subheader("📚 Knowledge Sources")
-            st.write(result["context"])
+            if result["context"]:
+                st.write(result["context"])
+            else:
+                st.write("Not required (Low Risk scenario)")
 
         except Exception as e:
             st.error(f"{t('error_msg')}")

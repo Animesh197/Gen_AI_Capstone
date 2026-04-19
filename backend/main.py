@@ -16,11 +16,8 @@ scaler = joblib.load("scaler.pkl")
 columns = joblib.load("column.pkl")
 
 
+
 def run_pipeline(user_input_dict):
-    """
-    Main pipeline:
-    Input → Preprocess → Predict → Analyze → Explain → Return structured output
-    """
 
     # ================= STEP 1: PREPROCESS =================
     final_input_df = preprocess_input(user_input_dict, columns)
@@ -41,6 +38,18 @@ def run_pipeline(user_input_dict):
         columns=final_input_df.columns
     )
 
+    # ================= STEP 5: RAG + LLM =================
+    try:
+        advisory, context = generate_advisory(
+            user_input_dict,
+            prediction,
+            risk,
+            issues
+        )
+    except Exception as e:
+        advisory = "Advisory generation failed."
+        context = "No context available."
+
     # ================= FINAL OUTPUT =================
     return {
         "prediction": float(prediction),
@@ -48,6 +57,6 @@ def run_pipeline(user_input_dict):
         "issues": issues,
         "recommendations": recommendations,
         "contributions": contribution_df,
-        "advisory": advisory,
-        "context": context
+        "advisory": advisory,        
+        "context": context           
     }
