@@ -54,6 +54,11 @@ LUCIDE_ICONS = {
     'book-open': '''<svg class="lucide-icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>''',
     'trending-down': '''<svg class="lucide-icon" viewBox="0 0 24 24"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>''',
     'trending-up': '''<svg class="lucide-icon" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>''',
+    'download': '''<svg class="lucide-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>''',
+    'wind': '''<svg class="lucide-icon" viewBox="0 0 24 24"><path d="M17.7 7.7a2.5 2.5 0 1 0-4.2-2.6"/><path d="M3 12h13a3 3 0 1 0-3-3"/><path d="M3 18h10a2.5 2.5 0 1 1-2.5 2.5"/><path d="M3 6h8"/></svg>''',
+    'tractor': '''<svg class="lucide-icon" viewBox="0 0 24 24"><path d="M3 4h6l1 4h11"/><path d="M10 8v8"/><path d="M14 8v6"/><circle cx="7" cy="18" r="3"/><circle cx="18" cy="18" r="2"/><path d="M10 16h7a2 2 0 0 0 2-2V8"/></svg>''',
+    'calendar': '''<svg class="lucide-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>''',
+    'bug': '''<svg class="lucide-icon" viewBox="0 0 24 24"><path d="M8 2l1.5 2M16 2l-1.5 2"/><path d="M9 7h6a4 4 0 0 1 4 4v2a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-2a4 4 0 0 1 4-4z"/><path d="M8 11h8"/><path d="M7 15h10"/><path d="M4 13h2"/><path d="M18 13h2"/><path d="M4 7h2"/><path d="M18 7h2"/></svg>''',
 }
 
 def lucide_icon(name: str, size_class: str = "md") -> str:
@@ -69,7 +74,6 @@ def lucide_icon(name: str, size_class: str = "md") -> str:
 # ================= PAGE CONFIG =================
 st.set_page_config(
     page_title="Smart Crop Yield Predictor | स्मार्ट फसल उपज भविष्यवक्ता",
-    page_icon="🌾",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -114,7 +118,7 @@ translations = {
         'confidence': 'Confidence',
         'high': 'High',
         'medium': 'Medium',
-        'download_report': '📥 Download Report',
+        'download_report': 'Download Report',
         'error_msg': 'An error occurred during prediction. Please check your inputs.',
         'tooltip_n': 'Nitrogen helps plants grow green and strong',
         'tooltip_p': 'Phosphorus supports root development',
@@ -157,7 +161,7 @@ translations = {
         'confidence': 'विश्वास',
         'high': 'उच्च',
         'medium': 'मध्यम',
-        'download_report': '📥 रिपोर्ट डाउनलोड करें',
+        'download_report': 'रिपोर्ट डाउनलोड करें',
         'error_msg': 'भविष्यवाणी के दौरान एक त्रुटि हुई। कृपया अपने इनपुट की जाँच करें।',
         'tooltip_n': 'नाइट्रोजन पौधों को हरा और मजबूत बनाता है',
         'tooltip_p': 'फॉस्फोरस जड़ विकास का समर्थन करता है',
@@ -1531,7 +1535,7 @@ with st.form("prediction_form"):
         Sunlight_Hours = st.slider("Sun", min_value=0.0, max_value=24.0, value=8.0, step=0.5,
                                   label_visibility="collapsed")
     with col3:
-        st.markdown(f"**💨 {t('wind_speed')}**")
+        st.markdown(f'**{lucide_icon("wind", "sm")} {t("wind_speed")}**', unsafe_allow_html=True)
         Wind_Speed = st.slider("Wind", min_value=0.0, max_value=50.0, value=3.0, step=0.5,
                               label_visibility="collapsed")
     
@@ -1540,7 +1544,7 @@ with st.form("prediction_form"):
     # Crop & Management Section
     st.markdown(f'''
     <div class="section-card">
-        <div class="section-header">🚜 {t("section_crop")}</div>
+        <div class="section-header">{lucide_icon('tractor', 'md')} {t("section_crop")}</div>
     </div>
     ''', unsafe_allow_html=True)
     
@@ -1550,7 +1554,7 @@ with st.form("prediction_form"):
         Crop_Type = st.selectbox("Crop", ["Wheat", "Rice", "Maize", "Barley", "Jute"],
                                 label_visibility="collapsed")
         
-        st.markdown(f"**📅 {t('season')}**")
+        st.markdown(f'**{lucide_icon("calendar", "sm")} {t("season")}**', unsafe_allow_html=True)
         Season = st.selectbox("Season", ["Kharif", "Rabi", "Zaid", "Summer", "Winter"],
                              label_visibility="collapsed")
         
@@ -1562,11 +1566,11 @@ with st.form("prediction_form"):
         Region = st.selectbox("Region", ["North", "South", "East", "West", "Central"],
                              label_visibility="collapsed")
         
-        st.markdown(f"**🧴 {t('fertilizer')}**")
+        st.markdown(f'**{lucide_icon("beaker", "sm")} {t("fertilizer")}**', unsafe_allow_html=True)
         Fertilizer_Used = st.number_input("Fert", min_value=0.0, max_value=500.0, value=120.0, step=5.0,
                                          label_visibility="collapsed")
         
-        st.markdown(f"**🦗 {t('pesticide')}**")
+        st.markdown(f'**{lucide_icon("bug", "sm")} {t("pesticide")}**', unsafe_allow_html=True)
         Pesticide_Used = st.number_input("Pest", min_value=0.0, max_value=100.0, value=30.0, step=1.0,
                                         label_visibility="collapsed")
     
