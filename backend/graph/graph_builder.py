@@ -12,23 +12,23 @@ def build_graph(model, scaler, columns):
 
     graph.add_node("preprocess", nodes["preprocess"])
     graph.add_node("predict", nodes["predict"])
-    graph.add_node("issue", nodes["issue"])
+    graph.add_node("explain", nodes["explain"])  # Moved before issue
+    graph.add_node("issue", nodes["issue"])      # Now runs after explain
     graph.add_node("risk", nodes["risk"])
     graph.add_node("recommend", nodes["recommend"])
-    graph.add_node("explain", nodes["explain"])
     graph.add_node("rag", nodes["rag"])
     graph.add_node("advisory", nodes["advisory"])
 
     graph.set_entry_point("preprocess")
 
     graph.add_edge("preprocess", "predict")
-    graph.add_edge("predict", "issue")
+    graph.add_edge("predict", "explain")  # explain runs right after predict
+    graph.add_edge("explain", "issue")    # issue uses ML insights from explain
     graph.add_edge("issue", "risk")
     graph.add_edge("risk", "recommend")
-    graph.add_edge("recommend", "explain")
 
     graph.add_conditional_edges(
-        "explain",
+        "recommend",  # Changed from "explain" to "recommend"
         risk_router,
         {
             "skip_advisory": END,

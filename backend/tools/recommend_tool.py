@@ -5,10 +5,13 @@ def recommend_tool(state):
         "potassium_deficiency":  ("Use muriate of potash (0-0-60) at 60-80 kg/ha to restore potassium levels", "medium"),
         "low_rainfall":          ("Install drip or sprinkler irrigation system for water management", "high"),
         "low_soil_moisture":     ("Increase irrigation frequency and consider mulching to retain soil moisture", "medium"),
+        "excess_fertilizer":     ("Reduce fertilizer application to avoid nutrient imbalance and soil degradation", "medium"),
         "low_soil_fertility":    ("Add farmyard manure (10-15 t/ha) or compost (5-8 t/ha) to improve soil fertility", "medium"),
         "acidic_soil":           ("Apply agricultural lime (2-4 t/ha) to raise soil pH to optimal range", "medium"),
         "alkaline_soil":         ("Use gypsum (2-3 t/ha) or elemental sulfur (200-500 kg/ha) to lower soil pH", "medium"),
         "heat_stress":           ("Use heat-tolerant varieties and increase irrigation frequency during hot periods", "high"),
+        "low_humidity":          ("Increase irrigation and use mulching to raise humidity around plants", "medium"),
+        "high_humidity":         ("Improve field drainage and increase plant spacing to reduce humidity", "medium"),
     }
 
     recs = []

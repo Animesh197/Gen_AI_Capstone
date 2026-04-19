@@ -9,6 +9,7 @@ class FarmState(TypedDict):
     issues: list
     recommendations: list
     contributions: Optional[Any]
+    ml_negative_factors: list  # New field for ML-detected negative factors
     context: Optional[str]
     advisory: Optional[dict]
 
@@ -22,6 +23,7 @@ def create_initial_state(user_input: dict) -> FarmState:
         "issues": [],
         "recommendations": [],
         "contributions": None,
+        "ml_negative_factors": [],  # Initialize empty
         "context": None,
         "advisory": None
     }
